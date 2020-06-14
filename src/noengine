@@ -1,0 +1,14 @@
+#!/bin/bash
+
+cdir=`dirname $(readlink -f "$BASH_SOURCE")`
+
+build="-betterC -J$cdir -I$cdir -L-lSDL2 -L-lGL -L-wrap=main -i=std.math -i=core.math -i=noengine -i=noengine_core"
+if [ "$1" == "dmd" ]; then
+   dmd    -version=App $build "${@:2}"
+elif [ "$1" == "ldc2" ]; then
+  ldc2 --d-version=App $build -L--export-dynamic "${@:2}"
+elif [ "$1" == "" ]; then
+  echo "Usage: noengine [dmd|ldc2] ..."
+else
+   dmd    -version=App $build $@
+fi
